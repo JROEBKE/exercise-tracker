@@ -1,0 +1,170 @@
+<div class="container">
+  <div class="jumbotron text-center">
+      <h1>Exercise tracker</h1>
+  </div>
+  <% if (success.length > 0) { %>
+      <div class="alert alert-success"><%= success %></div>
+  <% } %>
+  <% if (errors.length > 0) { %>
+      <div class="alert alert-danger">
+          <% for (error of errors) { %>
+              <%- error %><br> <!-- "-" instead of "=" to allow unescaped html -->
+          <% } %>
+      </div>
+  <% } %>
+
+  <div class="row">
+      <div class="col-sm-6">
+
+          <form action="/users/create" method="POST" id="addUser" class="form-horizontal" >
+  						<div class="form-group">
+  							<label for="userName" class ="control-label col-sm-4">Unique Username:</label>
+  							<div class ="control-label col-sm-8">
+  								<input type="text" name="userName" id="userName" class="form-control">
+  								<span id="idError" style="display: none;">You must enter a valid username</span>
+  						 </div>
+  						</div>
+              <div class="form-group">
+                <div class ="control-label col-sm-6">
+                </div>
+                <div class ="control-label col-sm-6">
+                    <button type="submit" name="create" class="btn btn-success btn-lg">Create User</button>
+                </div>
+              </div>
+          </form>
+
+        </div>
+        <div class="col-sm-6">
+
+          <form action="/users/user" method="GET" id="showUser" class="form-horizontal" >
+            <div class="form-group">
+              <label for="userId" class ="control-label col-sm-4">Username:</label>
+              <div class ="control-label col-sm-8">
+                <input type="text" name="userName" id="userName" class="form-control">
+                <span id="Error" style="display: none;">You must enter a valid userName</span>
+               </div>
+            </div>
+            <div class="form-group">
+              <div class ="control-label col-sm-6">
+              </div>
+              <div class ="control-label col-sm-6">
+                <button type="submit" name="show" class="btn btn-primary   btn-lg">Find UserId</button>
+              </div>
+            </div>
+        </form>
+
+      </div>
+
+  </div>
+  <div class="row">
+      <div class="col-sm-6">
+
+          <form action="/exercises/create" method="POST" id="addExercise" class="form-horizontal" >
+
+  						<div class="form-group">
+  							<label for="userId" class ="control-label col-sm-4">UserId:</label>
+  							<div class ="control-label col-sm-8">
+  								<input type="text" name="userId" id="userId" class="form-control">
+  						 </div>
+  						</div>
+
+              <div class="form-group">
+                <label for="exercise" class ="control-label col-sm-4">Exercise:</label>
+                <div class ="control-label col-sm-8">
+                  <input type="text" name="exercise" id="exercise" class="form-control">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="duration" class ="control-label col-sm-4">duration in min:</label>
+                <div class ="control-label col-sm-8">
+                  <input type="text" name="duration" id="duration" class="form-control">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="date" class ="control-label col-sm-4">Date:</label>
+                <div class ="control-label col-sm-8">
+                  <input type="date" name="date" id="date" class="form-control">
+                </div>
+              </div>
+
+	            <div class="form-group">
+                <div class ="control-label col-sm-6">
+              </div>
+              <div class ="control-label col-sm-6">
+                <button type="submit" name="track" class="btn btn-success btn-lg">Track Exercise</button>
+              </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="col-sm-6">
+
+          <form action="/exercises/log" method="GET" id="showExercise" class="form-horizontal" >
+                  <div class="form-group">
+                    <label for="userId" class ="control-label col-sm-4">UserId:</label>
+                    <div class ="control-label col-sm-8">
+                      <input type="text" name="userId" id="userId2" class="form-control">
+                      <span id="idError" style="display: none;">You must enter a valid userId</span>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="date" class ="control-label col-sm-4">Since:</label>
+                    <div class ="control-label col-sm-8">
+                      <input type="date" name="since" id="Since" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="date" class ="control-label col-sm-4">Until:</label>
+                    <div class ="control-label col-sm-8">
+                      <input type="date" name="until" id="until" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="date" class ="control-label col-sm-4">Limit:</label>
+                    <div class ="control-label col-sm-8">
+                      <input type="string" name="limit" id="limit" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class ="control-label col-sm-6">
+                  </div>
+                  <div class ="control-label col-sm-6">
+                      <button type="submit" name="show" class="btn btn-primary btn-lg">Show activties</button>
+                  </div>
+          </form>
+        </div>
+    </div>
+  </div>
+
+
+<!-- comfort feature to prefill input fields with handed over values -->
+<script type="text/javascript">
+//query parameters as default set if backend error occurs
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
+
+var userId = document.getElementById('userId');
+userId.value = getUrlParameter('userId');
+
+var userId = document.getElementById('userId2');
+userId.value = getUrlParameter('userId');
+
+var duration = document.getElementById('duration');
+duration.value = getUrlParameter('duration');
+
+var exercise = document.getElementById('exercise');
+exercise.value = getUrlParameter('exercise');
+
+var date = document.getElementById('date');
+date.value = getUrlParameter('date');
+
+var userName = document.getElementById('userName');
+date.value = getUrlParameter('userName');
+
+</script>

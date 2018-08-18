@@ -11,15 +11,9 @@ const express    = require('express'),
   cookieParser   = require('cookie-parser'),
   flash          = require('connect-flash'), //error UI
   argv           = require('minimist')(process.argv.slice(2)),
-  expressValidator = require('express-validator'),
-  helmet         = require('helmet'); //security validator
+  expressValidator = require('express-validator');
 
-
-
-// configure our application ===================
-
-// set sessions and cookie parser
-app.use(cookieParser());
+// set session
 app.use(session({
   secret: process.env.SECRET,
   cookie: { maxAge: 60000 },
@@ -42,36 +36,13 @@ mongoose.connect(process.env.DB_URI);
 app.use(bodyParser.urlencoded({ extended: true })); //true changed to false for validation test
 app.use(bodyParser.json());
 
-
 //Validation
 app.use(expressValidator());
-
-//helmet security
-app.use(helmet())
-
-
-//Set var port = 8080 as default;
-var   port = process.env.PORT || 8080;
-if(argv.port !== undefined)
-    port = argv.port;
-else
-    console.log('No --port=xxx specified, taking default port ' + port + '.')
-
-//Set var domain = localhost as default;
-var domain =  process.env.DOMAIN || 'localhost';
-if(argv.domain !== undefined)
-    domain = argv.domain;
-else
-    console.log('No --domain=xxx specified, taking default hostname "localhost".')
-
-// Set and display the application URL
-var applicationUrl = 'http://' + domain + ':' + port;
-  console.log('server running on ' + applicationUrl);
 
 // set the routes =============================
 app.use(require('./app/routes'));
 
-// start our server ===========================
-app.listen(port, () => {
-  console.log(`App listening on ${port}`);
+// start our engines ===========================
+app.listen(8080, function() {
+  console.log(`App listening on 8080`);
 });
